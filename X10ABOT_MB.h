@@ -21,9 +21,8 @@ static const byte OP_IO_HI = 2;
 static const byte OP_IO_LOW = 1;
 static const byte OP_IO_INP = 0;
 
-//PWM Operands
-static const byte OP_PWM_A = 0;
-static const byte OP_PWM_B = 1;
+//NULL OPERATION
+static const byte OP_NOP = 0;
 
 //Ports 1 - 4
 static const byte PORT_1 = 0 << 1;

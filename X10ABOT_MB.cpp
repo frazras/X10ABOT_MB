@@ -88,12 +88,17 @@ void X10ABOT_MB::test_function(){
   Serial.println(FN_IO, BIN);
   Serial.println(OP_IO_HI, BIN);
   Serial.print("Added: ");Serial.println((byte)(FN_IO+OP_IO_HI), BIN);
-  byte test_pattern[] =   {FN_IO+OP_IO_HI,9,PORT_1+PIN_B}; //1-1(17)-9-1
+
+  byte test_pattern[] =   {FN_IO+OP_IO_HI,9,PORT_1+PIN_B,99}; //1-1(17)-9-1
   byte test_pattern2[] =  {FN_IO+OP_IO_LOW,9,PORT_1+PIN_B}; //1-2-9-2
+  byte test_pattern3[] =  {FN_PWM+OP_NOP,9,PORT_1+PIN_B, 255*(80/100)}; //1-2-9-2
+  //byte test_pattern4[] =  {FN_PWM+OP_NOP,9,PORT_1+PIN_B, 255*(20/100)}; //1-2-9-2
 //Serial.write("size:"); Serial.println(sizeof(test_pattern));
-  dispatch(test_pattern, 3);
+  dispatch(test_pattern, 4);
+  //dispatch(test_pattern3, 4);
   delay(1000);
   dispatch(test_pattern2, 3);
+  //dispatch(test_pattern4, 4);
   delay(1000);
   Serial.println("DONE!");
 }
