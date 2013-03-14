@@ -8,8 +8,10 @@
 #ifndef X10ABOT_MB_H
 #define X10ABOT_MB_H
 
+#define LOGGING 1
 
 #include "Arduino.h" //"WProgram.h"
+
 
 //Functions
 static const byte FN_IO = 1 << 4;
