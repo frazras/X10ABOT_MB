@@ -23,6 +23,11 @@ static const byte OP_IO_HI = 2;
 static const byte OP_IO_LOW = 1;
 static const byte OP_IO_INP = 0;
 
+//IO Operands
+static const byte HI = 2;
+static const byte LO = 1;
+static const byte IN = 0;
+
 //NULL OPERATION
 static const byte OP_NOP = 0;
 
@@ -35,6 +40,9 @@ static const byte PORT_4 = 3 << 1;
 //Pins
 static const byte PIN_A = 0;
 static const byte PIN_B = 1;
+static const byte A = 0;
+static const byte B = 1;
+
 
 class X10ABOT_MB {
 
@@ -45,6 +53,10 @@ class X10ABOT_MB {
 
     void dispatch(byte* pattern, byte byte_length);
     void test_function();
+
+    //fundamental operations
+    void digital(byte state, byte db_address, byte port_number, byte operation);
+    void pwm(byte pwm_select, byte db_address, byte port_number, byte duty_cycle);
 
     /**
     * Logging Functions
