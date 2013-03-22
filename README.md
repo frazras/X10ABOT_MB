@@ -13,11 +13,15 @@ Example code:
     //ALLOW DEBUGGING over Serial
     #define LOGGING 0
 
-    X10ABOT_MB bot(LOGGING);
+    Actuator motor1(0,1);  //DC Motor
+    //Sensor force(0,1);  //Force Sensor
     void setup(){
       Serial.begin(9600);
     }
 
     void loop(){
-      bot.test_function();
+        motor1.on(100);
+        //force.readAnalog();
+        //int x = force.getAnalog();
+        motor1.test_function();
     }
