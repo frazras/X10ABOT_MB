@@ -28,7 +28,7 @@ Sensor::~Sensor(){
   /*nothing to destruct*/
 }
 
-X10ABOT_MB mb(LOGGING);
+//X10ABOT_MB sensor(LOGGING);
 
 /**
  * Sensor readDigital
@@ -39,10 +39,8 @@ X10ABOT_MB mb(LOGGING);
  void Sensor::readDigital(){}
  void Sensor::readDigitalA(){}
  void Sensor::readDigitalB(){}
- void Sensor::readAnalog(){
-  mb.analog(_db,_port);
-}
+ void Sensor::readAnalog(){}
 int Sensor::getAnalog(){
-  return mb.db._analog;
+  return analog(_db,_port);
 }
 void Sensor::off(){}

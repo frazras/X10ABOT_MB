@@ -1,11 +1,13 @@
 #include "X10ABOT_MB.h"
-/**
-* Byte 1:1111XXXX FUNCTION BYTE
-* Byte 1:XXXX1111 OPERAND BYTE
-* Byte 2:11111111 D.B. SELECTION
-* Byte 3:1111111X PORT SELECTION
-* Byte 3:XXXXXXX1 PIN SELECTION
-* Byte 3+n 11111111 DATA BYTES; n> 0
+
+/*
+Byte 1:1111XXXX FUNCTION BYTE
+Byte 1:XXXX1111 OPERAND BYTE
+Byte 2:11111111 D.B. SELECTION
+Byte 3:1111111X PORT SELECTION
+Byte 3:XXXXXXX1 PIN SELECTION
+Byte 4:11111111 INSTRUCTION SEQUENCE NUMBER
+Byte 4+n 11111111 DATA BYTES; n> 0
 */
 
 /**
@@ -18,7 +20,7 @@
  * @return void
  */
 void X10ABOT_MB::digital(byte state, byte db_address, byte port_number, byte pin_select){
-  byte microcode[] =   {FN_IO+state,db_address,((port_number-1)<<1)+pin_select};
+  byte microcode[] =   {FN_IO+state,db_address,((port_number-1)<<1)+pin_select,incr_instr_seq()};
   dispatch(microcode, sizeof(microcode));
 }
 
@@ -32,7 +34,7 @@ void X10ABOT_MB::digital(byte state, byte db_address, byte port_number, byte pin
  * @return void
  */
 void X10ABOT_MB::pwm(byte pwm_select, byte db_address, byte port_number, byte duty_cycle){
-  byte microcode[] =   {FN_PWM,db_address,((port_number-1)<<1)+pwm_select, duty_cycle};
+  byte microcode[] =   {FN_PWM,db_address,((port_number-1)<<1)+pwm_select,incr_instr_seq(),duty_cycle};
   dispatch(microcode, sizeof(microcode));
 }
 
@@ -43,7 +45,10 @@ void X10ABOT_MB::pwm(byte pwm_select, byte db_address, byte port_number, byte du
  * @param  byte  port_number the daughter board's port number connected to the device
  * @return int
  */
-void X10ABOT_MB::analog(byte db_address, byte port_number){
-  byte microcode[] =   {FN_ANALOG,db_address,((port_number-1)<<1)};
+byte X10ABOT_MB::analog(byte db_address, byte port_number){
+  byte seq_num = incr_instr_seq();
+  byte microcode[] =   {FN_ANALOG,db_address,((port_number-1)<<1),seq_num };
   dispatch(microcode, sizeof(microcode));
+  delay(50);
+  return requestHandler(microcode, sizeof(microcode),seq_num);
 }

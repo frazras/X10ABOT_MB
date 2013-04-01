@@ -29,7 +29,7 @@ Actuator::~Actuator(){
   /*nothing to destruct*/
 }
 
-X10ABOT_MB mb(LOGGING);
+X10ABOT_MB actuator(LOGGING);
 
 /**
  * Actuator run
@@ -48,51 +48,52 @@ void Actuator::run(byte power){
 
   if (power>0)
   {
-    mb.pwm(A, _db, _port, 255*power/100);
-    mb.digital(HI,_db,_port,A);
-    mb.digital(LO,_db,_port,B);
+    actuator.pwm(A, _db, _port, 255*power/100);
+    actuator.digital(HI,_db,_port,A);
+    actuator.digital(LO,_db,_port,B);
   }
   else{
-    mb.pwm(A, _db, _port, 255*power/100);
-    mb.digital(LO,_db,_port,A);
-    mb.digital(HI,_db,_port,B);
+    actuator.pwm(A, _db, _port, 255*power/100);
+    actuator.digital(LO,_db,_port,A);
+    actuator.digital(HI,_db,_port,B);
   }
 }
 
 void Actuator::on(byte power){
-  mb.digital(HI,_db,_port,A);
-  mb.digital(HI,_db,_port,B);
+  actuator.digital(HI,_db,_port,A);
+  actuator.digital(HI,_db,_port,B);
 }
 
 void Actuator::on(){
-  mb.digital(HI,_db,_port,A);
-  mb.digital(HI,_db,_port,B);
+  Serial.println("Motor ON!");
+  actuator.digital(HI,_db,_port,A);
+  actuator.digital(HI,_db,_port,B);
 }
 
 void Actuator::off(){
-  mb.digital(LO,_db,_port,A);
-  mb.digital(LO,_db,_port,B);
+  actuator.digital(LO,_db,_port,A);
+  actuator.digital(LO,_db,_port,B);
 }
 
 void Actuator::on_a(byte power){
-  mb.digital(HI,_db,_port,A);
+  actuator.digital(HI,_db,_port,A);
 }
 
 void Actuator::off_a(){
-  mb.digital(LO,_db,_port,A);
+  actuator.digital(LO,_db,_port,A);
 }
 
 void Actuator::on_b(byte power){
-  mb.digital(HI,_db,_port,B);
+  actuator.digital(HI,_db,_port,B);
 }
 
 void Actuator::off_b(){
-  mb.digital(LO,_db,_port,B);
+  actuator.digital(LO,_db,_port,B);
 }
 
 void Actuator::stop(){
-  mb.digital(LO,_db,_port,B);
+  actuator.digital(LO,_db,_port,B);
   delay(100);
-  mb.digital(HI,_db,_port,B);
+  actuator.digital(HI,_db,_port,B);
   delay(100);
 }

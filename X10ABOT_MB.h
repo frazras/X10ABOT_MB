@@ -8,7 +8,7 @@
 #ifndef X10ABOT_MB_H
 #define X10ABOT_MB_H
 
-#define LOGGING 1
+#define LOGGING 0
 #include <Wire.h>
 #include "Arduino.h" //"WProgram.h"
 //#include "Actuator.h"
@@ -49,37 +49,42 @@ static const byte A = 0;
 static const byte B = 1;
 
 //Microcode Array
+static const byte FUNCTION_OPERAND = 0;
 static const byte D_B_SELECTION = 1;
-static const byte FUNCTION_OPERAND =0;
 static const byte PORT_PIN = 2;
-
+static const byte SEQ_NUM = 3;
+static const byte INSTR_HEADER_SIZE = 4;
 
 
 class X10ABOT_MB{
 
   public:
-    X10ABOT_MB(byte logging){
-      _logging = logging;
-    }
+    X10ABOT_MB(byte logging);
     ~X10ABOT_MB();
 
     void dispatch(byte* pattern, byte byte_length);
+    byte requestHandler(byte* microcode, byte byte_length, byte seq_num);
     void test_function();
 
     //fundamental operations
     void digital(byte state, byte db_address, byte port_number, byte operation);
     void pwm(byte pwm_select, byte db_address, byte port_number, byte duty_cycle);
-    void analog(byte db_address, byte port_number);
+    byte analog(byte db_address, byte port_number);
     /**
     * Logging Functions
     **/
     void i2cStatusLog(byte var);
     void dispatchDataLog(byte * dispatch, int size);
+    byte incr_instr_seq();
 
   private:
     int _logging;
+    int _instr_seq;
     byte test_pattern[3];
     byte test_pattern2[3];
+    byte _lookup[3][2];
+    byte _lookup_index;
+    int _analog, _digital;
 
 };
 
@@ -94,7 +99,7 @@ class Actuator: public X10ABOT_MB
 {
 
   public:
-    Actuator(byte db_address, byte port_number):X10ABOT_MB(0){
+    Actuator(byte db_address, byte port_number):X10ABOT_MB(LOGGING){
       _db = db_address;
       _port = port_number;
     }
@@ -113,6 +118,7 @@ class Actuator: public X10ABOT_MB
 
   private:
     byte _db, _port, _pin;
+    byte _lookup[3][2];
 };
 
 #endif
@@ -127,7 +133,7 @@ class Sensor: public X10ABOT_MB
 {
 
   public:
-    Sensor(byte db_address, byte port_number):X10ABOT_MB(0){
+    Sensor(byte db_address, byte port_number):X10ABOT_MB(LOGGING){
       _db = db_address;
       _port = port_number;
     }
@@ -143,7 +149,7 @@ class Sensor: public X10ABOT_MB
 
   private:
     byte _db, _port, _pin;
-    int _analog;
+    int _analog, _digital;
 };
 
 #endif
