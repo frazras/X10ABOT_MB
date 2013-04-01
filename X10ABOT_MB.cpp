@@ -127,7 +127,9 @@ byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num)
     if(Wire.available()){    // slave may send less than requested
       byte c = Wire.read();
       if (c!=seq_num){
-
+        Serial.print(c);
+        Serial.print(" UNEQUAL TO ");
+        Serial.print(seq_num);
          //loop into cache
         _lookup[_lookup_index][0]= c;
         //for (int j = 0; j < 1; j++){

@@ -50,5 +50,5 @@ byte X10ABOT_MB::analog(byte db_address, byte port_number){
   byte microcode[] =   {FN_ANALOG,db_address,((port_number-1)<<1),seq_num };
   dispatch(microcode, sizeof(microcode));
   delay(50);
-  return requestHandler(microcode, sizeof(microcode),seq_num);
+  return requestHandler(microcode, 2,seq_num);
 }
