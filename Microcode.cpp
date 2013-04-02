@@ -19,11 +19,18 @@ Byte 4+n 11111111 DATA BYTES; n> 0
  * @param  byte  pin_select choose which of the I/O pins on the port to use A(0) or B(1)
  * @return void
  */
-void X10ABOT_MB::digital(byte state, byte db_address, byte port_number, byte pin_select){
+void X10ABOT_MB::digitalOut(byte state, byte db_address, byte port_number, byte pin_select){
   byte microcode[] =   {FN_IO+state,db_address,((port_number-1)<<1)+pin_select,incr_instr_seq()};
   dispatch(microcode, sizeof(microcode));
-}
 
+}
+byte X10ABOT_MB::digitalIn(byte db_address, byte port_number, byte pin_select){
+  byte seq_num = incr_instr_seq();
+  byte microcode[] =   {FN_IO+IN,db_address,((port_number-1)<<1)+pin_select,seq_num};
+  dispatch(microcode, sizeof(microcode));
+  delay(50);
+   return requestHandler(microcode, 2,seq_num);
+}
 /**
  * Asserts a PWM signal to a pin
  *
@@ -45,10 +52,10 @@ void X10ABOT_MB::pwm(byte pwm_select, byte db_address, byte port_number, byte du
  * @param  byte  port_number the daughter board's port number connected to the device
  * @return int
  */
-byte X10ABOT_MB::analog(byte db_address, byte port_number){
+int X10ABOT_MB::analog(byte db_address, byte port_number){
   byte seq_num = incr_instr_seq();
   byte microcode[] =   {FN_ANALOG,db_address,((port_number-1)<<1),seq_num };
   dispatch(microcode, sizeof(microcode));
   delay(50);
-  return requestHandler(microcode, 2,seq_num);
+  return requestHandler(microcode, 6,seq_num);
 }

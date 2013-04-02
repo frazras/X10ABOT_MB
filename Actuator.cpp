@@ -49,51 +49,51 @@ void Actuator::run(byte power){
   if (power>0)
   {
     actuator.pwm(A, _db, _port, 255*power/100);
-    actuator.digital(HI,_db,_port,A);
-    actuator.digital(LO,_db,_port,B);
+    actuator.digitalOut(HI,_db,_port,A);
+    actuator.digitalOut(LO,_db,_port,B);
   }
   else{
     actuator.pwm(A, _db, _port, 255*power/100);
-    actuator.digital(LO,_db,_port,A);
-    actuator.digital(HI,_db,_port,B);
+    actuator.digitalOut(LO,_db,_port,A);
+    actuator.digitalOut(HI,_db,_port,B);
   }
 }
 
 void Actuator::on(byte power){
-  actuator.digital(HI,_db,_port,A);
-  actuator.digital(HI,_db,_port,B);
+  actuator.digitalOut(HI,_db,_port,A);
+  actuator.digitalOut(HI,_db,_port,B);
 }
 
 void Actuator::on(){
   Serial.println("Motor ON!");
-  actuator.digital(HI,_db,_port,A);
-  actuator.digital(HI,_db,_port,B);
+  actuator.digitalOut(HI,_db,_port,A);
+  actuator.digitalOut(HI,_db,_port,B);
 }
 
 void Actuator::off(){
-  actuator.digital(LO,_db,_port,A);
-  actuator.digital(LO,_db,_port,B);
+  actuator.digitalOut(LO,_db,_port,A);
+  actuator.digitalOut(LO,_db,_port,B);
 }
 
 void Actuator::on_a(byte power){
-  actuator.digital(HI,_db,_port,A);
+  actuator.digitalOut(HI,_db,_port,A);
 }
 
 void Actuator::off_a(){
-  actuator.digital(LO,_db,_port,A);
+  actuator.digitalOut(LO,_db,_port,A);
 }
 
 void Actuator::on_b(byte power){
-  actuator.digital(HI,_db,_port,B);
+  actuator.digitalOut(HI,_db,_port,B);
 }
 
 void Actuator::off_b(){
-  actuator.digital(LO,_db,_port,B);
+  actuator.digitalOut(LO,_db,_port,B);
 }
 
 void Actuator::stop(){
-  actuator.digital(LO,_db,_port,B);
+  actuator.digitalOut(LO,_db,_port,B);
   delay(100);
-  actuator.digital(HI,_db,_port,B);
+  actuator.digitalOut(HI,_db,_port,B);
   delay(100);
 }

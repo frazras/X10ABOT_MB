@@ -63,13 +63,14 @@ class X10ABOT_MB{
     ~X10ABOT_MB();
 
     void dispatch(byte* pattern, byte byte_length);
-    byte requestHandler(byte* microcode, byte byte_length, byte seq_num);
+    int requestHandler(byte* microcode, byte byte_length, byte seq_num);
     void test_function();
 
-    //fundamental operations
-    void digital(byte state, byte db_address, byte port_number, byte operation);
+    //fundamental microcode operations
+    void digitalOut(byte state, byte db_address, byte port_number, byte operation);
+    byte digitalIn(byte db_address, byte port_number, byte operation);
     void pwm(byte pwm_select, byte db_address, byte port_number, byte duty_cycle);
-    byte analog(byte db_address, byte port_number);
+    int analog(byte db_address, byte port_number);
     /**
     * Logging Functions
     **/
@@ -137,13 +138,18 @@ class Sensor: public X10ABOT_MB
       _db = db_address;
       _port = port_number;
     }
+    Sensor(byte db_address, byte port_number, byte pin_select):X10ABOT_MB(LOGGING){
+      _db = db_address;
+      _port = port_number;
+      _pin = pin_select;
+    }
     //Sensor(byte db_address, byte port_number, byte pin_select);
     ~Sensor();
-    void readDigital();
+    byte readDigital();
     void readDigitalA();
     void readDigitalB();
-    void readDigital(byte power);
-    void readAnalog();
+    byte readDigital(byte power);
+    int readAnalog();
     int getAnalog();
     void off();
 

@@ -84,7 +84,7 @@ void X10ABOT_MB::dispatch(byte* microcode, byte byte_length){
  * @param  byte   byte_length the size in bytes of the microcode instruction
  * @return void
  */
-byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num){
+int X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num){
 
   for (int i = 0; i < 3; ++i){
     if (_lookup[i][0]==seq_num){
@@ -93,13 +93,14 @@ byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num)
 
   }
   if (microcode[D_B_SELECTION]==0){
-    byte return_array[2];
+    byte return_array[6];
     db.localRequest(return_array);
     //Serial.print("return_array0: ");Serial.println(return_array[0]);
     //Serial.print("return_array1: ");Serial.println(return_array[1]);
     //Serial.print("seq#: ");Serial.println(seq_num);
-    _lookup[_lookup_index][0]=return_array[0];
-    _lookup[_lookup_index][1]=return_array[1];
+
+    //_lookup[_lookup_index][0]=return_array[0];
+    //_lookup[_lookup_index][1]=return_array[1];
 
     if (return_array[0]!=seq_num){
 
@@ -113,7 +114,14 @@ byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num)
         _lookup_index++;
       }
     }else{
-      return return_array[1];
+      byte output[5];
+      for (int y=0; y<6;y++){
+        output[y]=return_array[y+1];
+      }
+
+      int x = atoi((char*)output);
+      //Serial.print("Source SensorData X");Serial.println(x);
+      return x;
     }
   }
   else{
@@ -123,7 +131,7 @@ byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num)
     //i2cStatusLog(Wire.endTransmission());    // stop transmitting
 
 
-    Wire.requestFrom((int)microcode[D_B_SELECTION], (int)byte_length);
+    Wire.requestFrom((int)microcode[D_B_SELECTION], 6);
     if(Wire.available()){    // slave may send less than requested
       byte c = Wire.read();
       if (c!=seq_num){
@@ -141,9 +149,16 @@ byte X10ABOT_MB::requestHandler(byte* microcode, byte byte_length, byte seq_num)
           }
         }else{
         //DO SOMETHING WITH c
+          byte result[5];
+          byte x=0;
         while(Wire.available()){    // slave may send less than requested
-          return Wire.read();
+          result[x]=Wire.read();
+//Serial.print("Result: ");Serial.println(result[x]);
+          x++;
         }
+        int w = atoi((char*)result);
+        //Serial.print("Source SensorData X: ");Serial.println(w);
+        return w;
       }
     }
 

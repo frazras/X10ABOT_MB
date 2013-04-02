@@ -36,11 +36,13 @@ Sensor::~Sensor(){
  * @param  byte power  Drives the Sensor in the negative or positive direction based on the power level. It operates btween -100 and +100.
  */
 
- void Sensor::readDigital(){}
+ byte Sensor::readDigital(){
+   return digitalIn(_db, _port, _pin);
+ }
+
+ int Sensor::readAnalog(){
+  return analog(_db,_port);
+ }
+void Sensor::off(){}
  void Sensor::readDigitalA(){}
  void Sensor::readDigitalB(){}
- void Sensor::readAnalog(){}
-int Sensor::getAnalog(){
-  return analog(_db,_port);
-}
-void Sensor::off(){}
