@@ -19,3 +19,7 @@ Example code:
       motor1.on(100);
       Serial.println(force.getAnalog());
   }
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/frazras/X10ABOT_MB/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
